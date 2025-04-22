@@ -1,0 +1,139 @@
+using System;
+
+namespace OrchestraApp
+{
+    // Абстрактний клас
+    abstract class MusicalInstrument
+    {
+        public string Name { get; set; }
+
+        public MusicalInstrument(string name)
+        {
+            Name = name;
+        }
+
+        public abstract void PlaySound();
+
+        public virtual void ShowInfo()
+        {
+            Console.WriteLine("Інструмент: " + Name);
+        }
+    }
+
+    // Інтерфейс для налаштовуваних інструментів
+    interface ITunable
+    {
+        void Tune();
+    }
+
+    // Клас Ударні
+    class Percussion : MusicalInstrument
+    {
+        public Percussion(string name) : base(name) { }
+
+        public override void PlaySound()
+        {
+            Console.WriteLine(Name + " звучить як: Бум-Бум");
+        }
+    }
+
+    // Клас Струнні
+    class StringInstrument : MusicalInstrument, ITunable
+    {
+        public StringInstrument(string name) : base(name) { }
+
+        public override void PlaySound()
+        {
+            Console.WriteLine(Name + " звучить як: Дзинь-Дзинь");
+        }
+
+        public void Tune()
+        {
+            Console.WriteLine(Name + " налаштовується: Натягування струн");
+        }
+    }
+
+    // Клас Духові
+    class WindInstrument : MusicalInstrument
+    {
+        public WindInstrument(string name) : base(name) { }
+
+        public override void PlaySound()
+        {
+            Console.WriteLine(Name + " звучить як: Фууу-Фууу");
+        }
+    }
+
+    // Конкретні інструменти
+    class Djembe : Percussion
+    {
+        public Djembe() : base("Джембе") { }
+
+        public override void PlaySound()
+        {
+            Console.WriteLine("Джембе звучить як: Тум-Тум");
+        }
+    }
+
+    class Drum : Percussion
+    {
+        public Drum() : base("Барабан") { }
+    }
+
+    class Violin : StringInstrument
+    {
+        public Violin() : base("Скрипка") { }
+
+        public override void PlaySound()
+        {
+            Console.WriteLine("Скрипка звучить як: Вііііі");
+        }
+    }
+
+    class Guitar : StringInstrument
+    {
+        public Guitar() : base("Гітара") { }
+    }
+
+    class Clarinet : WindInstrument
+    {
+        public Clarinet() : base("Кларнет") { }
+    }
+
+    // Головна програма
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            MusicalInstrument[] orchestra = new MusicalInstrument[]
+            {
+                new Djembe(),
+                new Drum(),
+                new Violin(),
+                new Guitar(),
+                new Clarinet()
+            };
+
+            Console.WriteLine("Склад оркестру:");
+            foreach (var instrument in orchestra)
+            {
+                instrument.ShowInfo();
+            }
+
+            Console.WriteLine("\nЗвук кожного інструменту:");
+            foreach (var instrument in orchestra)
+            {
+                instrument.PlaySound();
+
+                if (instrument is ITunable tunable)
+                {
+                    tunable.Tune();
+                }
+
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("Програма завершена.");
+        }
+    }
+}
